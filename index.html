@@ -1,1033 +1,613 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jared Throne — Mechanical Engineer</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #1a3a5c;
-    --surface: #1e4068;
-    --surface2: #163352;
-    --border: #2a5280;
-    --accent: #7ec8f0;
-    --accent2: #a8d8f0;
-    --text: #dceeff;
-    --muted: #6a9cc0;
-    --mono: 'Space Mono', monospace;
-    --sans: 'Syne', sans-serif;
-  }
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; }
-
-body {
-background: var(–bg);
-color: var(–text);
-font-family: var(–sans);
-overflow-x: hidden;
-cursor: crosshair;
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bp-bg:#0d1b2a;
+  --bp-bg2:#102035;
+  --bp-line:#1e3a5f;
+  --bp-line2:#162d4a;
+  --bp-text:#c8dff5;
+  --bp-dim:#5a89b8;
+  --bp-white:#e8f4ff;
+  --bp-accent:#4a9edd;
+  --bp-accent2:#7bc4ff;
+  --bp-gold:#f0c060;
+  --bp-red:#e05040;
+  --mono:'Share Tech Mono',monospace;
+  --sans:'Barlow',sans-serif;
+  --cond:'Barlow Condensed',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bp-bg);
+  color:var(--bp-text);
+  font-family:var(--sans);
+  font-weight:300;
+  overflow-x:hidden;
 }
 
-/* NOISE OVERLAY */
-body::before {
-content: ‘’;
-position: fixed;
-inset: 0;
-background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
-pointer-events: none;
-z-index: 9999;
-opacity: 0.15;
+/* BLUEPRINT GRID BACKGROUND */
+body::before{
+  content:'';
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background-image:
+    linear-gradient(var(--bp-line2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bp-line2) 1px, transparent 1px),
+    linear-gradient(var(--bp-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bp-line) 1px, transparent 1px);
+  background-size:80px 80px, 80px 80px, 16px 16px, 16px 16px;
+  background-position:-1px -1px;
+  pointer-events:none;
+  z-index:0;
+  opacity:0.6;
 }
 
 /* NAV */
-nav {
-position: fixed;
-top: 0; left: 0; right: 0;
-z-index: 100;
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 20px 48px;
-background: rgba(20,48,80,0.93);
-backdrop-filter: blur(12px);
-border-bottom: 1px solid var(–border);
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:0 48px;height:56px;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(13,27,42,0.92);
+  border-bottom:1px solid var(--bp-line);
+  backdrop-filter:blur(12px);
 }
-
-.nav-logo {
-font-family: var(–mono);
-font-size: 13px;
-color: var(–accent);
-letter-spacing: 0.1em;
-text-transform: uppercase;
+.nav-logo{
+  font-family:var(--mono);
+  font-size:13px;
+  letter-spacing:0.12em;
+  color:var(--bp-accent2);
 }
-
-.nav-links {
-display: flex;
-gap: 32px;
-list-style: none;
+.nav-links{display:flex;gap:28px;}
+.nav-links a{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:0.1em;color:var(--bp-dim);
+  text-decoration:none;text-transform:uppercase;
+  transition:color 0.2s;
 }
-
-.nav-links a {
-font-family: var(–mono);
-font-size: 11px;
-color: var(–muted);
-text-decoration: none;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-transition: color 0.2s;
-}
-
-.nav-links a:hover { color: var(–accent); }
-
-/* HERO */
-.hero {
-min-height: 100vh;
-display: grid;
-grid-template-columns: 1fr 1fr;
-padding: 0 48px;
-padding-top: 100px;
-position: relative;
-overflow: hidden;
-}
-
-.hero-grid-bg {
-position: absolute;
-inset: 0;
-background-image:
-linear-gradient(rgba(126,200,240,0.18) 1px, transparent 1px),
-linear-gradient(90deg, rgba(126,200,240,0.18) 1px, transparent 1px),
-linear-gradient(rgba(126,200,240,0.06) 1px, transparent 1px),
-linear-gradient(90deg, rgba(126,200,240,0.06) 1px, transparent 1px);
-background-size: 60px 60px, 60px 60px, 12px 12px, 12px 12px;
-}
-
-.hero-left {
-display: flex;
-flex-direction: column;
-justify-content: center;
-padding-right: 60px;
-position: relative;
-z-index: 1;
-}
-
-.hero-tag {
-font-family: var(–mono);
-font-size: 11px;
-color: var(–accent);
-letter-spacing: 0.2em;
-text-transform: uppercase;
-margin-bottom: 24px;
-display: flex;
-align-items: center;
-gap: 12px;
-}
-
-.hero-tag::before {
-content: ‘’;
-width: 32px;
-height: 1px;
-background: var(–accent);
-}
-
-h1 {
-font-size: clamp(52px, 6vw, 88px);
-font-weight: 800;
-line-height: 0.95;
-letter-spacing: -0.03em;
-margin-bottom: 28px;
-}
-
-h1 span {
-color: var(–accent);
-display: block;
-}
-
-.hero-desc {
-font-family: var(–mono);
-font-size: 13px;
-line-height: 1.8;
-color: var(–muted);
-max-width: 420px;
-margin-bottom: 40px;
-}
-
-.hero-desc strong { color: var(–text); }
-
-.hero-cta {
-display: flex;
-gap: 16px;
-flex-wrap: wrap;
-}
-
-.btn-primary {
-background: var(–accent);
-color: #0d2a45;
-padding: 14px 28px;
-font-family: var(–mono);
-font-size: 11px;
-font-weight: 700;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-text-decoration: none;
-border: none;
-cursor: crosshair;
-transition: all 0.2s;
-}
-
-.btn-primary:hover {
-background: #dceeff;
-color: #0d2a45;
-transform: translate(-2px, -2px);
-box-shadow: 4px 4px 0 rgba(126,200,240,0.4);
-}
-
-.btn-secondary {
-background: transparent;
-color: var(–text);
-padding: 14px 28px;
-font-family: var(–mono);
-font-size: 11px;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-text-decoration: none;
-border: 1px solid var(–border);
-cursor: crosshair;
-transition: all 0.2s;
-}
-
-.btn-secondary:hover {
-border-color: var(–accent);
-color: var(–accent);
-}
-
-.hero-right {
-display: flex;
-flex-direction: column;
-justify-content: center;
-position: relative;
-z-index: 1;
-}
-
-.hero-cards {
-display: flex;
-flex-direction: column;
-gap: 2px;
-margin-bottom: 2px;
-}
-
-.hero-card {
-background: var(–surface);
-border: 1px solid var(–border);
-padding: 20px 24px;
-display: flex;
-align-items: center;
-gap: 18px;
-transition: border-color 0.2s, background 0.2s;
-animation: fadeUp 0.6s ease both;
-}
-
-.hero-card:nth-child(1) { animation-delay: 0.1s; }
-.hero-card:nth-child(2) { animation-delay: 0.2s; }
-.hero-card:nth-child(3) { animation-delay: 0.3s; }
-.hero-card:nth-child(4) { animation-delay: 0.4s; }
-
-.hero-card:hover {
-border-color: var(–accent);
-background: var(–surface2);
-}
-
-.hero-card-icon {
-font-size: 22px;
-flex-shrink: 0;
-width: 40px;
-text-align: center;
-}
-
-.hero-card-title {
-font-size: 14px;
-font-weight: 700;
-margin-bottom: 3px;
-}
-
-.hero-card-desc {
-font-family: var(–mono);
-font-size: 11px;
-color: var(–muted);
-line-height: 1.5;
-}
-
-.location-bar {
-background: var(–surface);
-border: 1px solid var(–border);
-padding: 16px 28px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-}
-
-.location-bar span {
-font-family: var(–mono);
-font-size: 11px;
-color: var(–muted);
-letter-spacing: 0.1em;
-}
-
-.status-dot {
-display: flex;
-align-items: center;
-gap: 8px;
-font-family: var(–mono);
-font-size: 11px;
-color: var(–accent);
-}
-
-.status-dot::before {
-content: ‘’;
-width: 8px;
-height: 8px;
-background: var(–accent);
-border-radius: 50%;
-animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-0%, 100% { opacity: 1; transform: scale(1); }
-50% { opacity: 0.4; transform: scale(0.8); }
-}
+.nav-links a:hover{color:var(--bp-accent2);}
 
 /* SECTIONS */
-section {
-padding: 100px 48px;
-border-top: 1px solid var(–border);
+section{position:relative;z-index:1;}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:120px 48px 80px;
+  max-width:1100px;margin:0 auto;
+}
+.hero-label{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:0.2em;color:var(--bp-accent);
+  text-transform:uppercase;margin-bottom:24px;
+  display:flex;align-items:center;gap:12px;
+}
+.hero-label::before{
+  content:'';display:inline-block;
+  width:32px;height:1px;background:var(--bp-accent);
+}
+.hero-name{
+  font-family:var(--cond);
+  font-size:clamp(64px,10vw,120px);
+  font-weight:700;
+  line-height:0.9;
+  letter-spacing:-0.01em;
+  color:var(--bp-white);
+  margin-bottom:12px;
+  text-transform:uppercase;
+}
+.hero-name span{color:var(--bp-accent);}
+.hero-title{
+  font-family:var(--mono);font-size:14px;
+  letter-spacing:0.15em;color:var(--bp-gold);
+  text-transform:uppercase;margin-bottom:36px;
+}
+.hero-desc{
+  font-size:17px;line-height:1.7;
+  color:var(--bp-text);max-width:600px;
+  margin-bottom:48px;font-weight:300;
+}
+.hero-links{display:flex;gap:16px;flex-wrap:wrap;}
+.btn{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:0.12em;text-transform:uppercase;
+  padding:12px 24px;text-decoration:none;
+  border:1px solid;transition:all 0.2s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-primary{
+  background:var(--bp-accent);color:var(--bp-bg);
+  border-color:var(--bp-accent);
+}
+.btn-primary:hover{background:var(--bp-accent2);border-color:var(--bp-accent2);}
+.btn-outline{
+  background:transparent;color:var(--bp-accent2);
+  border-color:var(--bp-accent);
+}
+.btn-outline:hover{background:rgba(74,158,221,0.1);}
+
+/* DRAWING BORDER DECORATION */
+.hero-deco{
+  position:absolute;right:48px;top:50%;transform:translateY(-50%);
+  width:300px;height:300px;
+  border:1px solid var(--bp-line);
+  opacity:0.4;
+}
+.hero-deco::before{
+  content:'';position:absolute;
+  top:16px;left:16px;right:16px;bottom:16px;
+  border:1px solid var(--bp-accent);opacity:0.3;
+}
+.hero-deco::after{
+  content:'';position:absolute;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  width:80px;height:80px;
+  border:1px solid var(--bp-accent);
+  border-radius:50%;opacity:0.4;
 }
 
-.section-header {
-display: flex;
-align-items: baseline;
-gap: 20px;
-margin-bottom: 60px;
+/* SECTION WRAPPER */
+.section-inner{
+  max-width:1100px;margin:0 auto;
+  padding:80px 48px;
 }
-
-.section-num {
-font-family: var(–mono);
-font-size: 11px;
-color: var(–accent);
-letter-spacing: 0.2em;
+.section-header{
+  display:flex;align-items:center;gap:20px;
+  margin-bottom:56px;
 }
+.section-num{
+  font-family:var(--mono);font-size:11px;
+  color:var(--bp-accent);letter-spacing:0.1em;
+}
+.section-title{
+  font-family:var(--cond);font-size:36px;font-weight:700;
+  text-transform:uppercase;letter-spacing:0.05em;
+  color:var(--bp-white);
+}
+.section-line{flex:1;height:1px;background:var(--bp-line);}
 
-h2 {
-font-size: clamp(28px, 3.5vw, 48px);
-font-weight: 800;
-letter-spacing: -0.02em;
+/* ABOUT / SKILLS */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+.about-text{font-size:16px;line-height:1.8;color:var(--bp-text);}
+.about-text p{margin-bottom:16px;}
+.skills-groups{display:flex;flex-direction:column;gap:20px;}
+.skill-group-label{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.15em;color:var(--bp-accent);
+  text-transform:uppercase;margin-bottom:8px;
+}
+.skill-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.skill-tag{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.05em;
+  padding:4px 10px;
+  border:1px solid var(--bp-line);
+  color:var(--bp-dim);
+  background:rgba(30,58,95,0.3);
 }
 
 /* EXPERIENCE */
-.exp-list {
-display: flex;
-flex-direction: column;
-gap: 2px;
+.exp-list{display:flex;flex-direction:column;gap:2px;}
+.exp-item{
+  border:1px solid var(--bp-line);
+  background:rgba(16,32,53,0.5);
+  padding:28px 32px;
+  position:relative;
+  transition:border-color 0.2s, background 0.2s;
+  cursor:default;
 }
-
-.exp-item {
-background: var(–surface);
-border: 1px solid var(–border);
-padding: 36px;
-display: grid;
-grid-template-columns: 200px 1fr auto;
-gap: 32px;
-align-items: start;
-transition: border-color 0.2s, background 0.2s;
-position: relative;
+.exp-item:hover{
+  border-color:var(--bp-accent);
+  background:rgba(74,158,221,0.05);
 }
-
-.exp-item:hover {
-border-color: var(–accent);
-background: var(–surface2);
+.exp-item::before{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;
+  width:3px;background:var(--bp-line);
+  transition:background 0.2s;
 }
-
-.exp-date {
-font-family: var(–mono);
-font-size: 11px;
-color: var(–muted);
-letter-spacing: 0.1em;
-padding-top: 4px;
+.exp-item:hover::before{background:var(--bp-accent);}
+.exp-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
+.exp-role{
+  font-family:var(--cond);font-size:20px;font-weight:600;
+  color:var(--bp-white);letter-spacing:0.03em;text-transform:uppercase;
 }
-
-.exp-company {
-font-size: 11px;
-font-family: var(–mono);
-color: var(–accent);
-letter-spacing: 0.15em;
-text-transform: uppercase;
-margin-bottom: 6px;
+.exp-date{
+  font-family:var(--mono);font-size:10px;
+  color:var(--bp-dim);letter-spacing:0.1em;white-space:nowrap;
 }
-
-.exp-title {
-font-size: 20px;
-font-weight: 700;
-margin-bottom: 12px;
-letter-spacing: -0.01em;
+.exp-company{
+  font-family:var(--mono);font-size:12px;
+  color:var(--bp-accent);letter-spacing:0.08em;
+  margin-bottom:12px;
 }
-
-.exp-desc {
-font-family: var(–mono);
-font-size: 12px;
-color: var(–muted);
-line-height: 1.7;
-}
-
-.exp-tags {
-display: flex;
-flex-direction: column;
-gap: 6px;
-align-items: flex-end;
-}
-
-.tag {
-font-family: var(–mono);
-font-size: 10px;
-color: var(–muted);
-border: 1px solid var(–border);
-padding: 4px 10px;
-letter-spacing: 0.1em;
-text-transform: uppercase;
-white-space: nowrap;
-}
+.exp-loc{color:var(--bp-dim);font-size:10px;}
+.exp-desc{font-size:14px;line-height:1.7;color:var(--bp-text);}
 
 /* PROJECTS */
-.projects-grid {
-display: grid;
-grid-template-columns: repeat(2, 1fr);
-gap: 2px;
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px;}
+.proj-card{
+  border:1px solid var(--bp-line);
+  background:rgba(16,32,53,0.5);
+  padding:28px;
+  transition:all 0.2s;
+  position:relative;overflow:hidden;
 }
-
-.project-card {
-background: var(–surface);
-border: 1px solid var(–border);
-padding: 40px;
-position: relative;
-overflow: hidden;
-transition: border-color 0.3s;
+.proj-card::after{
+  content:'';
+  position:absolute;top:0;right:0;
+  width:40px;height:40px;
+  border-left:1px solid var(--bp-line);
+  border-bottom:1px solid var(--bp-line);
+  transition:border-color 0.2s;
 }
-
-.project-card:hover {
-border-color: var(–accent);
+.proj-card:hover{border-color:var(--bp-accent);background:rgba(74,158,221,0.05);}
+.proj-card:hover::after{border-color:var(--bp-accent);}
+.proj-tag{
+  font-family:var(--mono);font-size:9px;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--bp-accent);margin-bottom:12px;
 }
-
-.project-card:hover
-
-.project-context {
-font-family: var(–mono);
-font-size: 10px;
-color: var(–accent2);
-letter-spacing: 0.15em;
-text-transform: uppercase;
-margin-bottom: 12px;
+.proj-title{
+  font-family:var(--cond);font-size:18px;font-weight:600;
+  color:var(--bp-white);text-transform:uppercase;
+  letter-spacing:0.03em;margin-bottom:10px;
 }
-
-.project-title {
-font-size: 22px;
-font-weight: 700;
-margin-bottom: 16px;
-letter-spacing: -0.01em;
-line-height: 1.2;
-max-width: 280px;
+.proj-desc{font-size:13px;line-height:1.7;color:var(--bp-text);}
+.proj-tools{
+  margin-top:16px;display:flex;flex-wrap:wrap;gap:4px;
 }
-
-.project-body {
-font-family: var(–mono);
-font-size: 12px;
-color: var(–muted);
-line-height: 1.7;
-margin-bottom: 24px;
-}
-
-.project-result {
-border-top: 1px solid var(–border);
-padding-top: 20px;
-font-family: var(–mono);
-font-size: 11px;
-color: var(–text);
-line-height: 1.6;
-}
-
-.project-result strong {
-color: var(–accent);
-display: block;
-font-size: 10px;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-margin-bottom: 6px;
-}
-
-/* SKILLS */
-.skills-grid {
-display: grid;
-grid-template-columns: repeat(4, 1fr);
-gap: 2px;
-}
-
-.skill-group {
-background: var(–surface);
-border: 1px solid var(–border);
-padding: 32px;
-}
-
-.skill-group-title {
-font-family: var(–mono);
-font-size: 10px;
-color: var(–accent);
-letter-spacing: 0.2em;
-text-transform: uppercase;
-margin-bottom: 20px;
-padding-bottom: 12px;
-border-bottom: 1px solid var(–border);
-}
-
-.skill-list {
-list-style: none;
-display: flex;
-flex-direction: column;
-gap: 10px;
-}
-
-.skill-list li {
-font-family: var(–mono);
-font-size: 12px;
-color: var(–muted);
-display: flex;
-align-items: center;
-gap: 10px;
-transition: color 0.2s;
-}
-
-.skill-list li:hover { color: var(–text); }
-
-.skill-list li::before {
-content: ‘—’;
-color: var(–border);
-font-size: 10px;
-}
-
-/* AVAILABILITY */
-.avail-section {
-background: var(–surface);
-}
-
-.avail-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 48px;
-align-items: center;
-}
-
-.avail-text h2 {
-margin-bottom: 20px;
-}
-
-.avail-text p {
-font-family: var(–mono);
-font-size: 13px;
-color: var(–muted);
-line-height: 1.8;
-margin-bottom: 32px;
-}
-
-.avail-items {
-display: flex;
-flex-direction: column;
-gap: 2px;
-}
-
-.avail-item {
-background: var(–bg);
-border: 1px solid var(–border);
-padding: 20px 24px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-transition: border-color 0.2s;
-}
-
-.avail-item:hover { border-color: var(–accent); }
-
-.avail-item-name {
-font-size: 15px;
-font-weight: 600;
-}
-
-.avail-item-detail {
-font-family: var(–mono);
-font-size: 11px;
-color: var(–muted);
-}
-
-.avail-match {
-font-family: var(–mono);
-font-size: 11px;
-color: var(–accent);
-background: rgba(126,200,240,0.12);
-padding: 4px 10px;
+.proj-tool{
+  font-family:var(--mono);font-size:9px;
+  padding:2px 8px;border:1px solid var(--bp-line2);
+  color:var(--bp-dim);
 }
 
 /* CONTACT */
-.contact-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 2px;
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+.contact-intro{font-size:16px;line-height:1.8;color:var(--bp-text);}
+.contact-links{display:flex;flex-direction:column;gap:2px;}
+.contact-link{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:20px 24px;
+  border:1px solid var(--bp-line);
+  background:rgba(16,32,53,0.5);
+  text-decoration:none;
+  transition:all 0.2s;
 }
-
-.contact-card {
-background: var(–surface);
-border: 1px solid var(–border);
-padding: 40px;
-text-decoration: none;
-color: var(–text);
-display: block;
-transition: all 0.2s;
-position: relative;
-overflow: hidden;
+.contact-link:hover{border-color:var(--bp-accent);background:rgba(74,158,221,0.05);}
+.contact-link-label{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--bp-dim);margin-bottom:4px;
 }
-
-.contact-card::before {
-content: ‘’;
-position: absolute;
-bottom: 0; left: 0;
-width: 100%;
-height: 2px;
-background: var(–accent);
-transform: scaleX(0);
-transform-origin: left;
-transition: transform 0.3s;
+.contact-link-val{
+  font-size:15px;color:var(--bp-white);font-weight:400;
 }
-
-.contact-card:hover::before { transform: scaleX(1); }
-.contact-card:hover { background: var(–surface2); }
-
-.contact-type {
-font-family: var(–mono);
-font-size: 10px;
-color: var(–muted);
-letter-spacing: 0.2em;
-text-transform: uppercase;
-margin-bottom: 12px;
-}
-
-.contact-value {
-font-size: 20px;
-font-weight: 700;
+.contact-arrow{
+  font-family:var(--mono);font-size:18px;
+  color:var(--bp-accent);
 }
 
 /* FOOTER */
-footer {
-padding: 32px 48px;
-border-top: 1px solid var(–border);
-display: flex;
-justify-content: space-between;
-align-items: center;
+footer{
+  position:relative;z-index:1;
+  border-top:1px solid var(--bp-line);
+  padding:24px 48px;
+  display:flex;justify-content:space-between;align-items:center;
+  max-width:100%;
+}
+.footer-copy{
+  font-family:var(--mono);font-size:10px;
+  color:var(--bp-dim);letter-spacing:0.1em;
+}
+.footer-name{
+  font-family:var(--cond);font-size:13px;
+  font-weight:700;letter-spacing:0.2em;
+  color:var(--bp-line);text-transform:uppercase;
 }
 
-footer span {
-font-family: var(–mono);
-font-size: 11px;
-color: var(–muted);
-letter-spacing: 0.1em;
+/* DIVIDER */
+.bp-divider{
+  position:relative;z-index:1;
+  border:none;border-top:1px solid var(--bp-line);
+  max-width:1100px;margin:0 auto 0;
 }
 
-/* ANIMATIONS */
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(20px); }
-to { opacity: 1; transform: translateY(0); }
-}
+/* REVEAL ANIMATIONS */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.reveal.visible{opacity:1;transform:none;}
+.reveal-delay-1{transition-delay:0.1s;}
+.reveal-delay-2{transition-delay:0.2s;}
+.reveal-delay-3{transition-delay:0.3s;}
+.reveal-delay-4{transition-delay:0.4s;}
 
-.fade-up {
-opacity: 0;
-animation: fadeUp 0.7s ease forwards;
-}
-
-/* SCROLLBAR */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(–bg); }
-::-webkit-scrollbar-thumb { background: var(–border); }
-::-webkit-scrollbar-thumb:hover { background: var(–accent); }
-
-/* MOBILE */
-@media (max-width: 768px) {
-nav { padding: 16px 24px; }
-.nav-links { display: none; }
-.hero { grid-template-columns: 1fr; padding: 120px 24px 60px; gap: 48px; }
-.hero-left { padding-right: 0; }
-section { padding: 60px 24px; }
-.exp-item { grid-template-columns: 1fr; gap: 16px; }
-.exp-tags { flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
-.projects-grid { grid-template-columns: 1fr; }
-.skills-grid { grid-template-columns: 1fr 1fr; }
-.avail-grid { grid-template-columns: 1fr; }
-.contact-grid { grid-template-columns: 1fr; }
-footer { flex-direction: column; gap: 12px; text-align: center; }
+@media(max-width:768px){
+  nav{padding:0 20px;}
+  .nav-links{display:none;}
+  .hero{padding:100px 20px 60px;}
+  .hero-deco{display:none;}
+  .section-inner{padding:60px 20px;}
+  .about-grid{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr;}
+  footer{padding:20px;}
 }
 </style>
-
 </head>
 <body>
 
-<nav>
-  <div class="nav-logo">JT — Portfolio</div>
-  <ul class="nav-links">
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#availability">Availability</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+<nav id="nav">
+  <div class="nav-logo">JT — PORTFOLIO</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
 </nav>
 
 <!-- HERO -->
-
-<section class="hero" style="border-top: none; padding-top: 100px;">
-  <div class="hero-grid-bg"></div>
-  <div class="hero-left fade-up">
-    <div class="hero-tag">Mechanical Engineer</div>
-    <h1>Jared<span>Throne.</span></h1>
-    <p class="hero-desc">
-      I am a mechanical engineer out of Michigan State, currently working in fluid and hydraulic systems at Quest in Cincinnati. Before that I was doing experimental flow research in Germany at RWTH Aachen and thermal process work at Fraunhofer. I'm looking for a role where I'm constantly being challenged and picking up new skills.
-    </p>
-    <div class="hero-cta">
-      <a href="mailto:jaredjthrone@gmail.com" class="btn-primary">Get In Touch</a>
-      <a href="https://linkedin.com/in/jared-throne-507138207" target="_blank" class="btn-secondary">LinkedIn</a>
-      <a href="data:application/pdf;base64,JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUgo+PgplbmRvYmoKMiAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjEgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iagozIDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YyIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKNCAwIG9iago8PAovQ29udGVudHMgOCAwIFIgL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSAvUGFyZW50IDcgMCBSIC9SZXNvdXJjZXMgPDwKL0ZvbnQgMSAwIFIgL1Byb2NTZXQgWyAvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJIF0KPj4gL1JvdGF0ZSAwIC9UcmFucyA8PAoKPj4gCiAgL1R5cGUgL1BhZ2UKPj4KZW5kb2JqCjUgMCBvYmoKPDwKL1BhZ2VNb2RlIC9Vc2VOb25lIC9QYWdlcyA3IDAgUiAvVHlwZSAvQ2F0YWxvZwo+PgplbmRvYmoKNiAwIG9iago8PAovQXV0aG9yIChcKGFub255bW91c1wpKSAvQ3JlYXRpb25EYXRlIChEOjIwMjYwNDMwMTUyMDI2KzAwJzAwJykgL0NyZWF0b3IgKFwodW5zcGVjaWZpZWRcKSkgL0tleXdvcmRzICgpIC9Nb2REYXRlIChEOjIwMjYwNDMwMTUyMDI2KzAwJzAwJykgL1Byb2R1Y2VyIChSZXBvcnRMYWIgUERGIExpYnJhcnkgLSBcKG9wZW5zb3VyY2VcKSkgCiAgL1N1YmplY3QgKFwodW5zcGVjaWZpZWRcKSkgL1RpdGxlIChcKGFub255bW91c1wpKSAvVHJhcHBlZCAvRmFsc2UKPj4KZW5kb2JqCjcgMCBvYmoKPDwKL0NvdW50IDEgL0tpZHMgWyA0IDAgUiBdIC9UeXBlIC9QYWdlcwo+PgplbmRvYmoKOCAwIG9iago8PAovRmlsdGVyIFsgL0FTQ0lJODVEZWNvZGUgL0ZsYXRlRGVjb2RlIF0gL0xlbmd0aCAzMDA0Cj4+CnN0cmVhbQpHYiE7Zj5CZWRsJnE5U1lXMkRlTT8pLVY8SkI+dGEoZCQiW1JmSCNsY2dhWFEyOi9VKVBBXEtxU0dgL2FtWnAqQkNoPGBhVENpQDw7UUVic3JEaEJMVilWbENcImMwXyk4TmotXVhgIXNFRkNnMmExJEY1PzovQE1vJ09ARTxyLXFoSjszT05CL0lOdFE9RSJZXmspMTlWWDpjciY8ZGJBayxkWHEqI2pWZ1BqWC09VXE5Ny1lKnNIUzw9PU85UzoxYkBTVD5YXm4pKXVESVk2VFwpI2IxZVg9Y2VFNTJ1PTY1KiEsI2E0IkQicTAsYVpjWTI/KENUVTpSWmI0KVcoV3RPKFxwajg9MnQ2YGtjIlQoQVw4clB0cGR0W0teTGdFXDt1NXQpTjNMNlhwcmx1OT1GKmJRUUR1YFo9U2JMalhkUVQpXHJCbE8/K1s/c20qWGpiMFsrRm8qYmBHMmJDcCsrckk/TT1cOTVPaVFLcm1YZilYITQyIjprSlFSQWNIR204RUNbW01IKl5nTk1dVE9qSSFUK1xUczBBITRqcXEiYCRWOV9tdWtGXkplbkVUX0VadG0sczYqazhfTUZUUmJCMVRvbFY6dGRZOy1SUF8/N1lnV188VWM1NjIqdCJdLkJEViN0XFFlT2M3L1RQV19oZD1nZ0dGMkdYckhUdG5ecThMSCdjPDNVSzhVbDJsVGJBcG1BV0gxJVYqU1whZzNsOTpbXDRgLkdnMjs8WjpRTVpePDtGJlFeT2EpUFswJ0FoSTdMIlw5dDQlIShkcz1bJk50YiFOTVt0NCZQOHVkSnRJIzgkXCZCbD8yWHRUYk1JayVJdGBFKlUibnRrPz8/QVJgLF5bJHE2U107P1pnOD9TVUNpKWErcScsSWwxJjAsV1VjLyUkaVpEMVYpNS1COyJRcFhbWzc8alNGR2gyVGtaPTV0PCtINkElNEkzdTosLUprREpELmpTM0puJWw5aCo8RiwkRiIvdCpWZGwvZk1FJCROajpqcEA0Yk1NYGNcJiVNQ2k0MClcXGMxVHFNc2FoPiVLIVhgVDs5KjY7L1xwVWFoMj8zREclIjBoZHE9K0YxZ0pebk5YKjZCYyFvbVM7c0BDYkYlYTZzMzg/MCg8aGdOamFiQVJHYHE/aVxuZkRdXGshVztbUlhkOE8rbWE1L1NyRigqWU5bRV5BNVM5JmlOdD07bDA2azxgYENXSVksJklgbi5QMV07XWVBcGdeVlRzaD8lcGFDKGxvaGgnTyJJJCI0a09YQSMmU1NyOztQR1dyNCtmTy5CXlVpQ2pKLipYTFxZJl84PD1FVjBRNF1YNGhUPmQ5dTVSVDcmQFZvTzkkNHBXKS9YQkFnRnNram11MWdUZG4vXlpGczpjXzRhbUdAPWJGRkw3PCNRPT1Zb3M2a0hhYiV1YCtQIi9SXyVjLFI3dDszaWJBXzZVJk5PciFmPm4mN00pLHFWbXFjZllvTTdyYVw+JW9iVj5VIy5kPDAzajtEKyFtOj9wPWNcYGE3YWRrOCZXJjokTEZOUE0yOCRKVjdsRjRXQHFwZ0RSMzZHRmhTN1QkJjUzSUpHcSVdPD5JY2pvJzVvXCkiRD4/Yk9AWkpXZDpRWElZNTJXUzMpP3JXWmwzUnIkTTs4a0xXIitaUm42RU8/XlUkOyc8VUVTT1Jsb0EnITtdZWQ9T1pkKEIuNWZZbkQ1LTRMXjs1Tl1NLCM6XyRzYlIpOFRRM2k8KVM0YSVPOzhSU2UuVGxNImtJPVdaXlVPJ1huZCE8cjhPY0MwRk1tJ1twb1pJJzxuYVdiNFUrPyxfYF9FJUssbkwxaWVMZkRuMlN1KENtSEc6UkQrUjJFUGBORzEjXkM4NTZKXC5ZMG0+P2wyc1VbWEhONTAuc09FPmBCRTg4OmAtTVEpalxVZz0tKTFFNmpcSS1OOkJPNkRTXCs8TWY0ZFJwM0deZFk4LD9QPCg7L1U3LnFLLFBxUyQlZitULlFdTDsxamJOIk02XW9VUy1Eb1ZgbVBqbz4jLmUoLG9pKWM0Lis4TldwJSpGJE1abSkoMzEkXDpDJjQ0IysiZiZlITBIWFNhPDFzYS1yNylqdTNzU2paRidWSE5tTCtdUTpzOjR0JEJBajNBWy9HK00mOThRNEcxJDpaSV5yR1R1aS5jMl9jTzVdTTAtRiJicSJ0bSdyXSUnaEtlXW5oYGhoJyU5MEhQKk86ZDxpJWElSyV0LFdNMEc7a1YwMGYvUTBHLHQkRUgkRmtDVF1uXkhDLC80OG0yMmZuZ2daKk5kSmVVQVApL0xuME08PFxUYyo1JSg5R2EjYlJiO3A8ZGdTKEotQlo/Rl1LTXUuY2QnUjtFK1BXNzpvZjs/cTArMkY1LW1eSUZiJUpQSitYNVJWRC8haz9zbillQk4/dGY8SSw7MnNFNFciIVpFamcsLispbV4sVyZBWCVbLSRdNj9HNT1uKSMqPTlXOiQiKCZmJmFlTG4xdD5TNyNUOChOSE8yJDtjNDJpXVphXDY+cypjXjFlZkhhLGo+ITVOQmsrJ1tubjI8U0pHcmYuITFfQ048MUYkQiYhPFZXZTByNE9vIj85YjUmcU04KSlXQTg2XGA3b1VlISkjNU5LRG8yS1g6L2okQlIhZmtkJmF0RmdGKGVRbEYiWFsqbGFqN2JFLEQsQzsuX1onPipMN3FRO2MnYkFPaEgqZGhUKHBdISE6J1VyNV87TkNVVG5tImAuVzA/KEk7I1ZmXF5NRGtGQEhMPGYqbGFiYjJmKTJjKF5cdU1uJWdVR1hmUFMwYkdQIW5SZ0JeRU5ZRTVKcjZFSTROXE83Vk4/Ly45RTQrNTxjMC9APF9tIlhXVC0xczc8My1wZ0cqYU80WSd0SkkyUVA5Qz5lPztLVzpxIVJpJ1BgTCoiLSpOWCReTjpWb1UoUThpKC4oQ1RONCNeOkMlQnVbcTAzNEVcOUUzPV1zbF1VUTsrQGxTXnMuQmFEKjoyKG1icHJINyIpOmhSMTI4TUlgcGJFVTRJWzY0aTRvcGByR2dLMiZhLmZ1bDMjbHQ2UFo2MmU2alcuO0xHVCFIZiY1LXAiaWMkTS5rTCNSPEhfQkxcIz0zM28vIkAyZidbT3JHPUcjOmI1VnBaVUJzMVdiWUVFXW8qbldsQzgtN0VWTkdCYyVPQXE5OVVpbW9bKEhfRydNVXJTWkJTT0c+RiMiaTpNLDlxZCxJcnAuI3NPMV9hJSdXImcnOG89TEhEM2pbL0FPLztWNEg+SjQwZ19iW0BGP29VdTI1TkAiVStZaUlZLUs8Uzx1UDhbNzAoWUM3c1ZDLiduTU1AWDBINk83QyJwU11lM1VJZU0uUlthPztOKyYqZyVbWy5qVyFfKzdDWGFMUmI4W0NsRS9KXVQjUDtvaDJCUVtIUCM5QV8sSC9pSGByNyhjV2sjNWJtXkkrPFlHZjdiYlg2LDVJPS0nQFwyY15UMF5cPCo8YFcyOF83Witlbm85Ky83bkokVWU7NXNlPmlTMCI7YVEnI1JNXzw8Jz0+JEMlXl4nJCU/XTpVT2YvK1IjRCMqcDUhVCQ2cFhQUFBaJ0t0PTghV0NyWTJaXC85VjAxMzorJDBoZCFTLENEY3RoRmFeclkyYGMsMW9maVA9YHVBNmtbR0JqWkJJWilqR0krVm9MWmNFZkFRUlc3TVkwR3UnSTtLM002MGc0bS8vXiM2b0FXJTFRSFpHRUckSGZGS2hKbz47QDkwIUlxLCZLOmg3cS5rS09MaTJOSTNyRUwpTklJQjBKQjg9XzlfK3UhKlY6aCpSRV9GTz48ITBPNF1oS0MuW2pkczM8Q0k/X2UtKiJmUHIsYTVYai9oX1syW3VmUjI3JSEmNUJTaS5HW2coSihlLCRiInA9Z2JbZGRJJE5UQmspcT9OJzw4WkhcSUJSbyZoSVQ4Zk5sIWI2ZURjU2pdXG8+SiVoSCMrTEBrcWdkIzxXOVZ0K2Z0P2BUMXNeXX4+ZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgOQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwNjEgMDAwMDAgbiAKMDAwMDAwMDEwMiAwMDAwMCBuIAowMDAwMDAwMjA5IDAwMDAwIG4gCjAwMDAwMDAzMjEgMDAwMDAgbiAKMDAwMDAwMDUxNCAwMDAwMCBuIAowMDAwMDAwNTgyIDAwMDAwIG4gCjAwMDAwMDA4NjIgMDAwMDAgbiAKMDAwMDAwMDkyMSAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9JRCAKWzxhODI1ZjcyZWUzZGQxMjEyYzQ2Yzk2ZTNlZTNhZTliZD48YTgyNWY3MmVlM2RkMTIxMmM0NmM5NmUzZWUzYWU5YmQ+XQolIFJlcG9ydExhYiBnZW5lcmF0ZWQgUERGIGRvY3VtZW50IC0tIGRpZ2VzdCAob3BlbnNvdXJjZSkKCi9JbmZvIDYgMCBSCi9Sb290IDUgMCBSCi9TaXplIDkKPj4Kc3RhcnR4cmVmCjQwMTYKJSVFT0YK" download="Jared_Throne_Resume.pdf" class="btn-secondary">↓ Resume</a>
-    </div>
+<section class="hero" id="home">
+  <div class="hero-deco"></div>
+  <div class="hero-label reveal">Mechanical Engineer</div>
+  <h1 class="hero-name reveal reveal-delay-1">Jared<br><span>Throne</span>.</h1>
+  <div class="hero-title reveal reveal-delay-2">Fluids · Thermal · Materials · Experimental</div>
+  <p class="hero-desc reveal reveal-delay-3">
+    Michigan State ME graduate with hands-on experience across fluid dynamics, thermal systems, materials processing, and precision manufacturing. I've done experimental flow research at RWTH Aachen, process and materials work at Fraunhofer and GLCT, and aerospace hardware work at Quest Defense. I pick up new domains fast and want to keep it that way.
+  </p>
+  <div class="hero-links reveal reveal-delay-4">
+    <a class="btn btn-primary" href="#contact">Get In Touch</a>
+    <a class="btn btn-outline" href="https://linkedin.com/in/jared-throne-507138207" target="_blank">LinkedIn</a>
+    <a class="btn btn-outline" href="mailto:jaredjthrone@gmail.com">↓ Resume</a>
   </div>
-  <div class="hero-right">
-    <div class="hero-cards">
-      <div class="hero-card">
-        <div class="hero-card-icon">⚙️</div>
-        <div class="hero-card-content">
-          <div class="hero-card-title">Fluids & Hydraulics</div>
-          <div class="hero-card-desc">Fuel systems, actuators, pumps — design to delivery at Quest Defense</div>
-        </div>
-      </div>
-      <div class="hero-card">
-        <div class="hero-card-icon">🔬</div>
-        <div class="hero-card-content">
-          <div class="hero-card-title">Experimental Research</div>
-          <div class="hero-card-desc">TR-PIV, ANSYS Fluent validation — RWTH Aachen, Germany</div>
-        </div>
-      </div>
-      <div class="hero-card">
-        <div class="hero-card-icon">🌡️</div>
-        <div class="hero-card-content">
-          <div class="hero-card-title">Thermal & Process Systems</div>
-          <div class="hero-card-desc">Process control design for precision manufacturing — Fraunhofer USA</div>
-        </div>
-      </div>
-      <div class="hero-card">
-        <div class="hero-card-icon">🛠️</div>
-        <div class="hero-card-content">
-          <div class="hero-card-title">Hands-On Fabrication</div>
-          <div class="hero-card-desc">CNC machining, 3D printing, mechanical assembly — not just simulation</div>
-        </div>
-      </div>
+</section>
+
+<hr class="bp-divider">
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <span class="section-num">01 //</span>
+      <h2 class="section-title">About</h2>
+      <div class="section-line"></div>
     </div>
-    <div class="location-bar">
-      <span>📍 Cincinnati, OH — Open to Relocation</span>
-      <div class="status-dot">Available</div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I'm an entry-level mechanical engineer with a broad technical foundation: fluid dynamics, thermal systems, materials processing, controls, and precision manufacturing. I don't want to be locked into one specialty; I want to keep building range.</p>
+        <p>At RWTH Aachen I ran PIV experiments and CFD in ANSYS Fluent. At Fraunhofer USA I worked on materials characterization and process systems. At Great Lakes Crystal Technologies I machined precision components in technical materials. Now at Quest Defense I'm working on commercial aerospace hardware.</p>
+        <p>BS in Mechanical Engineering, Michigan State University, GPA 3.5, May 2025. Open to relocation and international opportunities.</p>
+      </div>
+      <div class="skills-groups reveal reveal-delay-1">
+        <div>
+          <div class="skill-group-label">CAD / Simulation</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Siemens NX</span>
+            <span class="skill-tag">SolidWorks</span>
+            <span class="skill-tag">CATIA</span>
+            <span class="skill-tag">AutoCAD</span>
+            <span class="skill-tag">ANSYS Fluent</span>
+            <span class="skill-tag">FEA</span>
+            <span class="skill-tag">Thermal Analysis</span>
+          </div>
+        </div>
+        <div>
+          <div class="skill-group-label">Analysis & Programming</div>
+          <div class="skill-tags">
+            <span class="skill-tag">MATLAB</span>
+            <span class="skill-tag">Simulink</span>
+            <span class="skill-tag">PIV</span>
+            <span class="skill-tag">GD&T</span>
+            <span class="skill-tag">Tolerance Stack-up</span>
+            <span class="skill-tag">DFM</span>
+          </div>
+        </div>
+        <div>
+          <div class="skill-group-label">Materials & Testing</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Materials Characterization</span>
+            <span class="skill-tag">Process Control</span>
+            <span class="skill-tag">Instrumentation</span>
+            <span class="skill-tag">Optical/Crystal Materials</span>
+          </div>
+        </div>
+        <div>
+          <div class="skill-group-label">Manufacturing</div>
+          <div class="skill-tags">
+            <span class="skill-tag">CNC Machining</span>
+            <span class="skill-tag">Milling</span>
+            <span class="skill-tag">Additive Manufacturing</span>
+            <span class="skill-tag">Fabrication</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<hr class="bp-divider">
 
 <!-- EXPERIENCE -->
-
 <section id="experience">
-  <div class="section-header">
-    <span class="section-num">01 —</span>
-    <h2>Experience</h2>
-  </div>
-  <div class="exp-list">
-
-```
-<div class="exp-item">
-  <div class="exp-date">Feb 2026 — Present</div>
-  <div>
-    <div class="exp-company">Quest Defense · Blue Ash, OH</div>
-    <div class="exp-title">Fluids Systems Engineer</div>
-    <div class="exp-desc">
-      Own design of fuel and hydraulic components — pumps, actuators, mechanical controls — for Fortune 500 defense customers. Manage suppliers across cost, performance, and manufacturability. Perform tolerance stack-up analysis, present at technical and program reviews, and resolve complex design problems across internal and external engineering groups.
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <span class="section-num">02 //</span>
+      <h2 class="section-title">Experience</h2>
+      <div class="section-line"></div>
     </div>
-  </div>
-  <div class="exp-tags">
-    <span class="tag">Hydraulics</span>
-    <span class="tag">Fuel Systems</span>
-    <span class="tag">Commercial Aerospace</span>
-  </div>
-</div>
+    <div class="exp-list">
 
-<div class="exp-item">
-  <div class="exp-date">May – Aug 2024</div>
-  <div>
-    <div class="exp-company">RWTH Aachen University · Germany</div>
-    <div class="exp-title">Research Intern</div>
-    <div class="exp-desc">
-      Executed time-resolved PIV experiments across four vessel geometries using blood-analogous fluid. Analyzed experimental data with MATLAB and CATIA. Simulated internal flow using ANSYS Fluent to validate experimental thermofluid findings. Calculated vessel dilatation of 14.6% confirming mechanical behavior comparable to human vasculature.
+      <div class="exp-item reveal">
+        <div class="exp-top">
+          <div class="exp-role">Fluids Systems Engineer</div>
+          <div class="exp-date">Feb 2026 - Present</div>
+        </div>
+        <div class="exp-company">Quest Defense <span class="exp-loc">· Blue Ash, OH</span></div>
+        <div class="exp-desc">Own design of fuel and hydraulic components (pumps, actuators, mechanical controls) for Fortune 500 customers. Manage suppliers across cost, performance, and manufacturability. Present in technical and program reviews, interfacing with internal and external engineering groups to resolve complex design problems.</div>
+      </div>
+
+      <div class="exp-item reveal reveal-delay-1">
+        <div class="exp-top">
+          <div class="exp-role">Research Intern, Experimental Fluid Dynamics</div>
+          <div class="exp-date">May - Aug 2024</div>
+        </div>
+        <div class="exp-company">RWTH Aachen University <span class="exp-loc">· Aachen, Germany</span></div>
+        <div class="exp-desc">Executed time-resolved PIV experiments across four vessel geometries using blood analogous fluid; analyzed data with MATLAB and CATIA. Simulated internal flow using computational methods to validate experimental thermofluid findings across vessel geometry variations.</div>
+      </div>
+
+      <div class="exp-item reveal reveal-delay-2">
+        <div class="exp-top">
+          <div class="exp-role">Systems Engineering Intern, Thermal and Process Control</div>
+          <div class="exp-date">May - Oct 2023</div>
+        </div>
+        <div class="exp-company">Fraunhofer USA CMW <span class="exp-loc">· East Lansing, MI</span></div>
+        <div class="exp-desc">Designed water conditioning systems achieving 25 GPM flow rate for diamond growth thermal regulation. Interpreted GD&T drawings for complex assemblies and developed safety systems improving workplace safety for 20+ employees.</div>
+      </div>
+
+      <div class="exp-item reveal reveal-delay-3">
+        <div class="exp-top">
+          <div class="exp-role">Process and Equipment Technician</div>
+          <div class="exp-date">Nov 2023 - May 2024</div>
+        </div>
+        <div class="exp-company">Great Lakes Crystal Technologies <span class="exp-loc">· East Lansing, MI</span></div>
+        <div class="exp-desc">CNC machined molybdenum components for high-spec manufacturing environments, maintaining stringent dimensional and quality standards. Coordinated cross-functional troubleshooting to resolve equipment and process issues, minimizing production downtime.</div>
+      </div>
+
     </div>
-  </div>
-  <div class="exp-tags">
-    <span class="tag">TR-PIV</span>
-    <span class="tag">ANSYS Fluent</span>
-    <span class="tag">Research</span>
-  </div>
-</div>
-
-<div class="exp-item">
-  <div class="exp-date">May – Oct 2023</div>
-  <div>
-    <div class="exp-company">Fraunhofer USA CMW · East Lansing, MI</div>
-    <div class="exp-title">Systems Engineering Intern — Thermal & Process Control</div>
-    <div class="exp-desc">
-      Designed thermal process control systems regulating water conditioning for industrial diamond growth — where precise temperature stability directly determines crystal quality. Interpreted GD&T drawings for complex assemblies and developed safety systems for 20+ employees working in high-precision diamond manufacturing environments.
-    </div>
-  </div>
-  <div class="exp-tags">
-    <span class="tag">Thermal</span>
-    <span class="tag">GD&T</span>
-    <span class="tag">Process Control</span>
-  </div>
-</div>
-
-<div class="exp-item">
-  <div class="exp-date">Nov 2023 – May 2024</div>
-  <div>
-    <div class="exp-company">Great Lakes Crystal Technologies · East Lansing, MI</div>
-    <div class="exp-title">Process & Equipment Technician</div>
-    <div class="exp-desc">
-      CNC machined molybdenum components used directly in industrial diamond growth systems — molybdenum's extreme heat resistance makes it critical for the high-temperature, high-pressure environments of diamond manufacturing. Coordinated cross-functional troubleshooting to keep production lines running with minimal downtime.
-    </div>
-  </div>
-  <div class="exp-tags">
-    <span class="tag">CNC</span>
-    <span class="tag">Manufacturing</span>
-    <span class="tag">Molybdenum</span>
-  </div>
-</div>
-```
-
   </div>
 </section>
+
+<hr class="bp-divider">
 
 <!-- PROJECTS -->
-
 <section id="projects">
-  <div class="section-header">
-    <span class="section-num">02 —</span>
-    <h2>Projects</h2>
-  </div>
-  <div class="projects-grid">
-
-```
-<div class="project-card">
-  <div class="project-context">NASA Psyche Mission · Michigan State</div>
-  <div class="project-title">Robotic Explorer for Asteroid 16 Psyche</div>
-  <div class="project-body">
-    Designed a low-gravity rover drivetrain with rocker-bogie suspension, SMA mesh wheels, and a Lorentz-force jump actuator. Modeled in SolidWorks/Inventor with structural and thermal FEA in Altair Inspire and Fusion 360.
-  </div>
-  <div class="project-result">
-    <strong>Key Result</strong>
-    FEA showed FOS &gt;10 and actuator stresses &lt;0.4 MPa. Energy analysis supports ~20 days and ~68 km of travel at 10W solar input.
-  </div>
-</div>
-
-<div class="project-card">
-  <div class="project-context">RWTH Aachen University · Research</div>
-  <div class="project-title">Blood-Analog Flow Measurements in Vessel Models</div>
-  <div class="project-body">
-    Investigated pulsatile flow in four vessel geometries using Time-Resolved PIV and matched-compliance silicone vessels. Reconstructed 3D velocity fields using the Shake-the-Box algorithm with high-speed cameras.
-  </div>
-  <div class="project-result">
-    <strong>Key Result</strong>
-    Measured 14.6% vessel dilatation confirming realistic biomechanical behavior. Established validated framework for future pressure-coupled PTV measurements.
-  </div>
-</div>
-
-<div class="project-card">
-  <div class="project-context">ME 412 · Michigan State</div>
-  <div class="project-title">Two-Phase Copper Heat Pipe</div>
-  <div class="project-body">
-    Designed, fabricated, and tested a two-phase copper heat pipe removing heat from an 80–100°C source and rejecting it to a 0°C PVC sink. Optimized working-fluid volume under vacuum conditions using Fourier's Law and Newton's Law of Cooling.
-  </div>
-  <div class="project-result">
-    <strong>Key Result</strong>
-    Achieved 8–11.1°C cooling vs. 2°C natural cooldown. Combined heat-transfer rate of ~121W. Optimal fill near 30%.
-  </div>
-</div>
-
-<div class="project-card">
-  <div class="project-context">ME 470 · Michigan State</div>
-  <div class="project-title">MAC Launcher — Mechanical Design</div>
-  <div class="project-body">
-    Engineered a spring-powered cornhole launcher with crank-slider mechanism and adjustable launch angle. Selected from catapult, clay-pigeon, and trebuchet concepts via CAD modeling, kinematic analysis, and energy-based velocity calculations.
-  </div>
-  <div class="project-result">
-    <strong>Key Result</strong>
-    Accurate bean bag launches at 15 ft. FEA confirmed acceptable stress levels across all structural components.
-  </div>
-</div>
-```
-
-  </div>
-</section>
-
-<!-- SKILLS -->
-
-<section id="skills">
-  <div class="section-header">
-    <span class="section-num">03 —</span>
-    <h2>Technical Skills</h2>
-  </div>
-  <div class="skills-grid">
-    <div class="skill-group">
-      <div class="skill-group-title">CAD</div>
-      <ul class="skill-list">
-        <li>Siemens NX</li>
-        <li>SolidWorks</li>
-        <li>CATIA</li>
-        <li>AutoCAD</li>
-        <li>Inventor</li>
-      </ul>
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <span class="section-num">03 //</span>
+      <h2 class="section-title">Projects</h2>
+      <div class="section-line"></div>
     </div>
-    <div class="skill-group">
-      <div class="skill-group-title">Simulation</div>
-      <ul class="skill-list">
-        <li>ANSYS Fluent</li>
-        <li>FEA (Structural)</li>
-        <li>Thermal Analysis</li>
-        <li>MATLAB / Simulink</li>
-        <li>Altair Inspire</li>
-      </ul>
-    </div>
-    <div class="skill-group">
-      <div class="skill-group-title">Engineering Methods</div>
-      <ul class="skill-list">
-        <li>GD&T</li>
-        <li>Tolerance Stack-Up</li>
-        <li>DFM</li>
-        <li>Experimental Design</li>
-        <li>TR-PIV / PTV</li>
-      </ul>
-    </div>
-    <div class="skill-group">
-      <div class="skill-group-title">Manufacturing</div>
-      <ul class="skill-list">
-        <li>CNC Machining</li>
-        <li>Milling</li>
-        <li>3D Printing</li>
-        <li>Additive Mfg.</li>
-        <li>Mechanical Assembly</li>
-      </ul>
+    <div class="projects-grid">
+
+      <div class="proj-card reveal">
+        <div class="proj-tag">Structural / Thermal</div>
+        <div class="proj-title">NASA Psyche Mission Rover Concept</div>
+        <div class="proj-desc">Structural and thermal simulation for a rover concept targeting the metallic asteroid Psyche. FEA-driven design under deep-space thermal conditions.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">ANSYS FEA</span>
+          <span class="proj-tool">Thermal Analysis</span>
+          <span class="proj-tool">SolidWorks</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal reveal-delay-1">
+        <div class="proj-tag">Controls / Mechatronics</div>
+        <div class="proj-title">PID-Controlled Mini Segway</div>
+        <div class="proj-desc">Designed and tuned a PID control system for a self-balancing two-wheeled robot in MATLAB Simulink. Hardware-in-the-loop testing and iterative gain tuning.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">MATLAB</span>
+          <span class="proj-tool">Simulink</span>
+          <span class="proj-tool">PID Control</span>
+          <span class="proj-tool">HIL Testing</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal reveal-delay-2">
+        <div class="proj-tag">Structural / DFM</div>
+        <div class="proj-title">MAC Launcher: Cornhole Launcher</div>
+        <div class="proj-desc">Iterative FEA-driven design of a mechanical cornhole launcher. Applied DFM principles and tolerance stack-up analysis through multiple design revisions.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">FEA</span>
+          <span class="proj-tool">GD&T</span>
+          <span class="proj-tool">DFM</span>
+          <span class="proj-tool">Tolerance Stack-up</span>
+        </div>
+      </div>
+
+      <div class="proj-card reveal reveal-delay-3">
+        <div class="proj-tag">Experimental Fluids</div>
+        <div class="proj-title">Vortex Shedding Visualization</div>
+        <div class="proj-desc">Hydrogen bubble flow visualization experiment studying vortex shedding behind bluff bodies. Analyzed Reynolds and Strouhal numbers against theoretical predictions.</div>
+        <div class="proj-tools">
+          <span class="proj-tool">PIV</span>
+          <span class="proj-tool">Flow Visualization</span>
+          <span class="proj-tool">Reynolds Analysis</span>
+          <span class="proj-tool">Strouhal Number</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
-<!-- AVAILABILITY -->
-
-<section id="availability" class="avail-section">
-  <div class="avail-grid">
-    <div class="avail-text">
-      <div class="section-header" style="margin-bottom: 20px;">
-        <span class="section-num">04 —</span>
-        <h2>What I'm Looking For</h2>
-      </div>
-      <p>
-        Hands-on engineering at the frontier — propulsion, fluids, thermal, experimental. Small teams where I have ownership over real hardware. Open to relocation anywhere for the right opportunity.
-      </p>
-      <a href="mailto:jaredjthrone@gmail.com" class="btn-primary">Let's Talk</a>
-    </div>
-    <div class="avail-items">
-      <div class="avail-item">
-        <div>
-          <div class="avail-item-name">Propulsion / Fluid Systems</div>
-          <div class="avail-item-detail">Aerospace startups, defense R&D</div>
-        </div>
-        <div class="avail-match">Top Match</div>
-      </div>
-      <div class="avail-item">
-        <div>
-          <div class="avail-item-name">Test & Experimental Engineer</div>
-          <div class="avail-item-detail">Hardware validation, test rigs, national labs</div>
-        </div>
-        <div class="avail-match">Strong Fit</div>
-      </div>
-      <div class="avail-item">
-        <div>
-          <div class="avail-item-name">Thermal / Cryogenic Systems</div>
-          <div class="avail-item-detail">Hydrogen, space, quantum cooling</div>
-        </div>
-        <div class="avail-match">Strong Fit</div>
-      </div>
-      <div class="avail-item">
-        <div>
-          <div class="avail-item-name">Turnaround / Rotating Field</div>
-          <div class="avail-item-detail">Contract gigs, 2–8 week shutdowns</div>
-        </div>
-        <div class="avail-match">Open</div>
-      </div>
-    </div>
-  </div>
-</section>
+<hr class="bp-divider">
 
 <!-- CONTACT -->
-
 <section id="contact">
-  <div class="section-header">
-    <span class="section-num">05 —</span>
-    <h2>Contact</h2>
-  </div>
-  <div class="contact-grid">
-    <a href="mailto:jaredjthrone@gmail.com" class="contact-card">
-      <div class="contact-type">Email</div>
-      <div class="contact-value">jaredjthrone@gmail.com</div>
-    </a>
-    <a href="tel:2483451882" class="contact-card">
-      <div class="contact-type">Phone</div>
-      <div class="contact-value">(248) 345-1882</div>
-    </a>
-    <a href="https://linkedin.com/in/jared-throne-507138207" target="_blank" class="contact-card">
-      <div class="contact-type">LinkedIn</div>
-      <div class="contact-value">linkedin.com/in/jared-throne-507138207</div>
-    </a>
-    <div class="contact-card" style="cursor: crosshair;">
-      <div class="contact-type">Location</div>
-      <div class="contact-value">Cincinnati, OH — Open to Relocation</div>
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <span class="section-num">04 //</span>
+      <h2 class="section-title">Contact</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-intro reveal">
+        <p style="margin-bottom:16px;">Open to new opportunities: R&D, test engineering, fluids/thermal roles, and contract or rotating positions. Willing to relocate internationally.</p>
+        <p>Michigan State ME, class of 2025. Based in Ohio, mobile worldwide.</p>
+      </div>
+      <div class="contact-links reveal reveal-delay-1">
+        <a class="contact-link" href="mailto:jaredjthrone@gmail.com">
+          <div>
+            <div class="contact-link-label">Email</div>
+            <div class="contact-link-val">jaredjthrone@gmail.com</div>
+          </div>
+          <div class="contact-arrow">→</div>
+        </a>
+        <a class="contact-link" href="https://linkedin.com/in/jared-throne-507138207" target="_blank">
+          <div>
+            <div class="contact-link-label">LinkedIn</div>
+            <div class="contact-link-val">linkedin.com/in/jared-throne</div>
+          </div>
+          <div class="contact-arrow">→</div>
+        </a>
+        <a class="contact-link" href="tel:2483451882">
+          <div>
+            <div class="contact-link-label">Phone</div>
+            <div class="contact-link-val">(248) 345-1882</div>
+          </div>
+          <div class="contact-arrow">→</div>
+        </a>
+      </div>
     </div>
   </div>
 </section>
 
 <footer>
-  <span>Jared Throne — Mechanical Engineer</span>
-  <span>Michigan State University · B.S. ME · 2025</span>
+  <div class="footer-copy">© 2026 Jared Throne · Mechanical Engineer</div>
+  <div class="footer-name">JARED THRONE</div>
 </footer>
 
 <script>
-  // Intersection observer for fade-up animations
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(el => {
-      if (el.isIntersecting) {
-        el.target.style.opacity = '1';
-        el.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  document.querySelectorAll('.exp-item, .project-card, .skill-group, .avail-item, .contact-card').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(16px)';
-    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, border-color 0.2s, background 0.2s';
-    observer.observe(el);
-  });
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Trigger hero reveals on load
+setTimeout(() => {
+  document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible'));
+}, 100);
 </script>
-
 </body>
 </html>
